@@ -180,4 +180,51 @@ We did an example iPython notebook (KL.ipynb) in class.
 \smallskip
 Next class, we will use the reverse projection to get Q. This is called "variational inference".
 
+\subsection{Exercise}
+
+Entropy in info theory measures the uncertainty of a distribution and information reduces uncertainty. To set priors on some unknown distribution, we typically want to chose a distribution which best represents the current state of knowledge. This distribution is one with the largest entropy (principle of maximum entropy). This states we want to chose a distribution with the largest uncertainty but still fits our knowledge.
+
+\smallskip
+
+Show that maximizing entropy of $p(x)$ under some current knowledge $E_{p(x)}[\phi_k(x)] = c_k$ is in the exponential family. Show the maximum entropy distribution when our constraints our $E_{p(x)}[x] = \mu$ and $E_{p(x)}[x^2] = \sigma^2$ 
+
+\bigskip
+
+Solution:
+
+\smallskip
+
+For a discrete distribution $p(x)$, our entropy equation is $H(x) = - \sum_x p(x) log p(x)$. Our constraints our $\sum_x p(x) = 1$ and $ \sum_x p(x) \phi_k(x) = c_k$. To maximize under constraints, we write out the Lagrangian:
+
+\begin{align*}
+\mathcal{L} &= - \sum_x p(x) log p(x) + \lambda_0 (\sum_x p(x) - 1) + \sum_k \lambda_k (\sum_x p(x) \phi_k(x) - c_k)
+\end{align*}
+
+We maximize with respect to the distribution $p(x)$,
+
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial p} &= -1 - log p(x) + \lambda_0 + \sum_k \lambda_k \phi_k(x) = 0 \\
+&\rightarrow p(x) \propto exp(\sum_k \lambda_k \phi_k(x)) = \frac{1}{Z}exp(\theta^T \phi(x))
+\end{align*}
+
+Where we say $\lambda = \theta$. This is the exponential family form.
+
+
+
+Now we have two known constraints: $\sum_x p(x) x = \mu$ and $\sum_x p(x) x^2 = \sigma^2$, so that $\phi_1(x) = x$ and $\phi_2(x) = x^2$.
+
+\begin{align*}
+\mathcal{L} &= - \sum_x p(x) log p(x) + \lambda_0 (\sum_x p(x) - 1) + \lambda_1 (\sum_x p(x) x - \mu) + \lambda_2 (\sum_x p(x) x^2 - \sigma^2) \\
+\frac{\partial \mathcal{L}}{\partial p} &= -1 - log p(x) + \lambda_0 + \lambda_1 + \lambda_2 x^2\\
+&\rightarrow p(x) \propto exp(\lambda_0 + \lambda_1 x + \lambda_2 x^2 - 1)
+\end{align*}
+
+Now either by using the constraint equations and a fair amount of messy algebra, or by using Ansatz and recognizing that this equation looks like a Gaussian, one can show that $p(x) = \frac{1}{2\pi\sigma^2} exp(-\frac{x^2}{2\sigma^2})$
+
+\bigskip
+
+Reference: https://hips.seas.harvard.edu/blog/2013/02/18/exponential-families-and-maximum-entropy/
+
+
+
 \end{document}
